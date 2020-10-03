@@ -1,0 +1,107 @@
+03/10/2020
+Installé au coworking de Lacanau, avec Ben et Séb
+
+Thème Jam : "Stuck in a loop" (https://ldjam.com/events/ludum-dare/47)
+
+Travail sur document de design
+
+J'ai un premier document, avec des idées précises pour le design des niveaux
+=> je vais commencer par ça pour fixer les idées
+
+Utilisation de la mécanique de "MeshLib" + "GridMap" Godot
+https://www.youtube.com/watch?v=UGltqKZFxrs
+https://www.youtube.com/watch?v=jD04Tua191Q
+https://www.youtube.com/watch?v=OYn49ghh9k0
+
+Modélisation des tuiles :
+Carrés de taille fixée
+- partir de cubes applatis pour ne pas avoir de soucis de rendu par manque d'épaisseur
+- Conserver le centre au centre de la tuile (pour placement et rotations plus faciles dans Godot)
+- ? Avoir Z=0 (Y=0 pour Godot) pour le centre pour faciliter calculs dans le code ensuite ?
+- Mutualiser les matériaux pour pouvoir changer d'avis sur le style
+- Choisir une palette !
+
+Pour le workflow gridmap, cf. gridmap.txt
+
+Palette : j'essaie colormind.io sur une image trouvée via "desert far west trains cactus"
+=> que de petites palettes (5 couleurs)
+
+Séb me recommande https://lospec.com/palette-list
+Je prend la palette Pico-8 : https://lospec.com/palette-list/pico-8
+
+Taille modèles : dans Godot, une unité = 1 mètre
+Je vais conserver la taille du cube par défaut dans Blender => tuiles de 2x2 mètres
+
+Pour le workflow modé / palette, cf mesh_coloring.txt
+
+Beaucoup de mal à construire une meshlib correcte, je ne trouve pas le bon workflow depuis glb
+
+Je renonce à l'approche "Meshlib + gridmap" : pas trouvé comment efficacement travailler
+
+J'installerais bien https://gestaltor.io/ pour mieux comprendre le contenu de mes modèles,
+mais pas de version gratuite
+
+Après discussion avec Séb et Ben : le level design / éditeur de niveau est une pierre
+d'achoppement très classique, et les outils intégrés "GUI" sont souvent décevants
+=> coder moi-même une mécanique d'instanciation du niveau à partir d'un fichier
+   de description (texte, bitmap...) est un passage normal, et qui me donnera plus
+   de liberté par rapport aux outils
+
+Je pars donc sur l'approche suivante :
+- un tileset.blend unique contenant toutes mes tuiles (avec un mesh ou un empty parent en racine pour chacun)
+- je les positionne côte à côte, sans les centrer mais avec une translation entière (2) à chaque fois
+- je positionne dans cette même scène une caméra (perspective) et une lumière pour avoir une idée du rendu
+
+Pour courber les rails à partir de la tile "straight", j'utilise le modifier "Simple Deform"
+Difficile à intuiter, bon exemple : https://www.youtube.com/watch?v=iq2_goboheo
+
+Pas simple, même avec un exemple... Il faudrait extruder le long d'une courbe peut-être ?
+J'ai fini pas extruder à la main et par bouger les traverses manuellement, pas très heureux...
+
+Pour une vue "isométrique", réglages caméra :
+- Projection : Orthogonal
+- Size : augmenter (1 par défaut, trop petit ; joue le rôle de la "distance")
+- angles : x=45, up=y=35.264 (https://en.wikipedia.org/wiki/Isometric_projection#Rotation_angles)
+
+Bof. Pas simple à placer
+Des conseils ici (Unity) :
+https://answers.unity.com/questions/12027/how-to-do-a-camera-that-is-top-downisometric.html
+"Create an empty GameObject called 'CameraTarget' at (0,0,0). Create a camera at (0,0,-10).
+ Parent the Camera to the CameraTarget. Set the rotation of the Camera Target to (30,45,0)
+ then check 'Orthographic' under the Camera settings. Adjust the 'Orthographic Size'
+ camera setting to change the amount of zoom. Move the CameraTarget around the world to
+ change the focal point on the map."
+ 
+Transposé à Godot : caméra en (0,0,10), taille > 1, rotations ?
+
+Des schémas ici :
+https://gamedev.stackexchange.com/questions/74782/rendering-models-in-isometric-view
+https://en.wikipedia.org/wiki/Isometric_video_game_graphics
+(!) https://web.archive.org/web/20170426055522/https://flarerpg.org/tutorials/isometric_tiles/
+
+Je vais faire des tests avec une scène "vide"
+Je n'arrive pas à transposer les angles de caméra...
+
+J'ai pu faire une scène convenable dans blender en suivant :
+http://clintbellanger.net/articles/isometric_tiles/
+
+Je vais essayer de faire l'équivalent dans Godot, en important cette scène directement :
+- export de la scène Blender en glTF (en cochant Include > Cameras et +Y Up)
+- import godot
+
+La correspondance semble décente... Distance / taille pas identique, mais échelle si
+Blender : caméra en (10, -10, 9), rotations (60, 0, 45), orthographic scale : 10
+Godot :
+- caméra a un parent en (10, 9, 10) ayant une rotation de (60, 45, 0)
+- la caméra elle-même a une rotation de (-90, 0, 0), size : 10
+
+Rendu Godot identique avec caméra par défaut et parent en (10, 9, 10) ayant une rotation de (-30, 45, 0)
+
+Ce qu'il me manquait lorsque j'ai transposé les angles à la main :
+- la caméra doit être en hauteur pour "surplomber" la scène
+- une rotation Y pour être "en diagonale" (ce point était OK)
+- une rotation *negative* sur l'axe des X pour se "pencher" vers l'origine (j'étais en angle nul ou positif)
+
+Ensuite on peut "centrer" verticalement avec la position Y de la caméra, et "zoomer" avec la size
+
+J'ai pu retoucher mes scènes de test et obtenir des rendus proches de Blender

@@ -1,0 +1,45 @@
+Concept / Gameplay
+Niveaux modélisés en 3D, vue "isométrique"
+=> positionnement dde caméra adapté
+=> on ne voit pas le ciel
+Rails formant une boucle, il faut actionner des aiguillages pour sortir
+On "arrive" sur le niveau par rails, ensuite caméra fixe
+=> Sensation de continuité du monde
+Tracé rails simple, avec boucles, huit...
+Le train tourne en continu sur le circuit ("stuck in a loop")
+Il est invulnérable aux dégâts
+On "descend" notre personnage, chargé d'actionner un ou plusieurs aiguillages
+Délai pour les actionner, pendant lequel on ne peut rien faire d'autre
+Des ennemis arrivent et nous tirent dessus (bullet hell ?)
+On peut riposter
+
+
+Design Graphique
+Far West / Désert
+Décors simples, cactus / rochers / ossements clichés
+Le terrain lui-même est totalement plat, en tout cas sur les zones où les rails sont posés
+Lowpoly pour train, tracks et décors
+Pour personnages, Séb me conseille "deux sphères + tweening"
+
+
+Niveaux
+Concevoir des "tuiles" dans Blender pour les rails, façon tileset
+Les assembler ensuite dans Godot : utiliser "Mesh Library" + "Gridmap"
+Google image sur "train tracks tileset" pour des idées de tuiles
+
+HUD
+Le plus simple possible ! Compteur de vie, timer contextuel pour aiguillages peut-être ?
+
+
+Technique, plateforme
+Moteur : Godot
+Cible : Web serait bien, à tester au fur et à mesure. Se rabattre sur exe si problème
+=> OpenGL ES 2.0
+Modèles : glTF "principled shader" Blender + palette de couleurs restreinte
+
+
+Stretch goals
+
+
+Nom
+Train Escape

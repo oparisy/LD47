@@ -1,0 +1,44 @@
+Workflow gridmap/meshlib (https://www.youtube.com/watch?v=jD04Tua191Q) :
+- importer meshes
+- placer chaque MeshInstance sous un parent commun :
+  créer un spatial, les y drag & dropper (position sans importante)
+  Mais se mettre en orthographic, top view et snap to grid est plus agréable
+- pour chacun : le sélectionner, Mesh > Create Convex Static Body
+- Sauver scène résultante
+- Scene > Convert To > Mesh Library (crée un ".meshlib")
+Ensuite :
+- Créer une nouvelle scène ("Spatial" à la racine)
+- Y ajouter un noeud "GridMap"
+- Y assigner un thème (la meshlib précédente)
+- Placer les tuiles...
+- "S" pour rotation tuiles
+Pour avoir les bonnes couleurs :
+- créer un nouveau "WorldEnvironment" (dans la scène principale par exemple)
+- Dans "Ambient light", passer la couleur de noir à blanc
+
+Documentation gridmaps Godot :
+https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html
+"Note that a "Convex" collision body will work better for simple meshes.
+ For more complex shapes, select "Create Trimesh Static Body""
+"Only the materials from within the meshes are used when generating the mesh library.
+ Materials set on the node will be ignored."
+"The "Cell/Size" property should be set to the size of your meshes.
+ (...) Set the "Center Y" property to "Off".
+"To remove a tile, hold Shift and use Right-click."
+"Click on the "GridMap" menu to see options and shortcuts.
+ For example, pressing S rotates a tile around the y-axis."
+
+Y a-t-il moyen de faire un unique .blend avec l'ensemble des tuiles,
+puis de les exporter "en une fois" pour création de la meshlib ?
+
+J'ai un peu de mal avec le workflow ci-dessus ; obsolète ?
+Ce qui marche pour moi :
+- importer le glb avec "Import" > "Material"> "Storage" à "Built-in"
+- en faire une scène
+- sélectionner son MeshInstance, utiliser "Create Trimesh Static Body"
+  (l'autre option ne semble plus exister)
+- drag&drop de cette scène dans une scène 3D
+- "Scene" > "Convert To" > "Mesh Library"
+
+Sélection "cell" : shift + click
+Suppression sélection : Suppr

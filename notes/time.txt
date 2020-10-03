@@ -1,0 +1,14 @@
+03/10/2020 (Samedi)
+10h00 Matériel installé au coworking Lacanau
+10h30 Premier document de design ; je me renseigne sur MeshLib / GridMap Godot
+11h15 Suffisamment d'informations sur gridmap, je cherche une palette
+11h30 Palette choisie, pause
+12h15 Première tuile modélisée et peinte avec palette
+13h30 Coincé sur workflow meshlib...
+14h00 Je renonce à l'idée d'une meshlib. Pause repas
+15h00 Reprise
+16h30 J'ai 4 tuiles...
+18h30 J'ai appris comment régler une caméra pour avoir une vue "isométrique" dans Godot (et Blender)
+19h15 Retour courses ; étude instanciation assets
+21h15 J'ai mis au point un exemple d'instanciation d'asset pris dans un glb contenant toutes mes tuiles
+21h50 Fin pause repas

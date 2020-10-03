@@ -1,0 +1,13 @@
+Samedi :
+ * [Fait] Document de design
+ * [Fait] Se renseigner sur gridmap Godot
+ * [Fait] Trouver une palette
+ * [Fait] Modéliser des tuiles minimales
+ * [Fait] Réglages caméra isométrique
+ * [Fait] Etudier instanciation programmatique de sous-arbres (assets immportés)
+ * Format de fichier simple (bitmap + metadata txt ?) pour description niveau
+ * Faire un premier niveau dans Godot, placer caméra
+
+Dimanche :
+
+Extra (ordre arbitraire) :

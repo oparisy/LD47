@@ -1,0 +1,16 @@
+Meshes + color palette Blender :
+https://www.youtube.com/watch?v=-9cuTjOBbiM
+https://www.youtube.com/watch?v=q78-sqlWJwI
+Workflow :
+ - unwrap mesh (Edit mode, sélectionner les faces, "U", "Unwrap")
+ - split viewport => ajouter éditeur UVs
+ - Y charger la palette
+ - Déplacer les coordonnées UV vers la couleur choisie (les scaler si nécessaire)
+ - Pour sélectionner les faces plus facilement : le faire en 3D
+
+Le matériau associé au mesh peut être un PBR, mais il faut ajouter au graphe par défaut
+un noeud "image texture" et le relier à "Base Color"
+
+Export en glb, "Limit to" > "Selected Objects"
+Godot : penser à passer "Import" > "Material"> "Storage" à "Built-in"
+Je peux le changer dans Import > Presets > Set as default for Scene 
