@@ -162,3 +162,11 @@ Je fais un peu de tuning de l'éclairage : repasser en GL ES 3 améliore significa
 le rendu (meilleures ombres, moins d'artefacts sur tuiles contigues)
 Doc sur tuning paramètres ombres :
 https://docs.godotengine.org/en/latest/tutorials/3d/lights_and_shadows.html#shadow-mapping
+
+Je crée une coure de Bézier quadratique pour avoir quelque chose à "suivre"
+
+Approximer quart de cercles : pas simple !
+http://www.whizkidtech.redprince.net/bezier/circle/
+https://spencermortensen.com/articles/bezier-circle/
+
+Je n'aurai pas les coins "en aveugle" avec des Bézier : trop compliqué à mettre au point

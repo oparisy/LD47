@@ -2,6 +2,9 @@ extends Spatial
 
 var level_data
 
+# The width and height in world units of a tile
+var tile_worldsize = 2
+
 func setup(level_data, tileset):
 	self.level_data = level_data
 
@@ -23,11 +26,14 @@ func setup(level_data, tileset):
 			var tr = get_cell_worldpos(x, y)
 			addTileForCell(cell, tiles, self, tr)
 
+func get_tile_worldsize() -> int:
+	return tile_worldsize
+
 # Return the translation from the origin to this cell
 func get_cell_worldpos(x, y) -> Vector3:
 	var width = level_data.get_width()
 	var height = level_data.get_height()
-	return Vector3(2*(x - width/2), 0, 2*(y - height/2))
+	return Vector3(tile_worldsize*(x - width/2), 0, tile_worldsize*(y - height/2))
 
 func addTileForCell(entry:Dictionary, tiles, level:Node, tr:Vector3):
 	var kind:String = entry.kind

@@ -12,6 +12,7 @@ Dimanche :
  * [Fait] Améliorer rendu : ajouter soleil, ombres, limiter impact couleur ciel
  * [Fait] Construction modèle du niveau en mémoire (pour comportements/animation)
  * [Fait] Reventilation code Main dans scènes suivant responsabilités
+ * Générer une courbe suivant les rails
  * Algo suivi rails !!
  * Modéliser train et wagons
  * Props supplémentaires
