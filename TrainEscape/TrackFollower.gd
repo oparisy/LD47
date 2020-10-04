@@ -1,41 +1,84 @@
-extends Spatial
-
-onready var capsule = $MeshInstance
+extends Node
 
 var level_data
 var level_view
 
-var track:Array # An array of Vector2
+# An array of Vector2 representing waypoints
+var track:Array
 
-# Current cell we are on (level coordinates)
-var x
-var y
+# Where we started tracking
+var init_x
+var init_y
 
-# Current position (world coordinates)
-var world_pos
-
-# Current length crossed on this cell (from its "entry side")
-var lin_pos
-
+# Call this once
 func setup(level_data, level_view, init_x, init_y):
 	self.level_data = level_data
 	self.level_view = level_view
+	self.init_x = init_x
+	self.init_y = init_y
 
-	self.track = build_curve(init_x, init_y)
-	
-	self.x = init_x
-	self.y = init_y
-	
+	self.track = _build_curve(init_x, init_y)
 	var kind:String = level_data.get_at(init_x, init_y).kind
 	print('Set up on a %s at (%d,%d)' % [kind, init_x, init_y])
+
+
+# "Allocate" a new tracking entity at start location
+func track_new() -> Dictionary:
+	var entity = {}
+	entity.x = init_x
+	entity.y = init_y
 	
-	self.lin_pos = 0.5
+	# Current track segment; we are between idx and (idx+1)%count
+	entity.idx = 0
+	
+	# Current length crossed on this segment so far
+	entity.seg_crossed_already = 0
+
+	entity.world_pos = level_view.get_cell_worldpos(init_x, init_y)
+	return entity
+
+
+# Move entity along the path by "to_cross" linear units
+# var speed = 5
+# var to_cross = delta * speed
+func advance(entity, to_cross):
+	var remaining = to_cross
+	if remaining <= 0:
+		# Should not happen but hey
+		return
+
+	var p0:Vector2
+	var p1:Vector2
+	var seg_len
+
+	while remaining > 0:
+		# Get the length of the current segment
+		p0 = track[entity.idx]
+		p1 = track[(entity.idx + 1) % track.size()]
+		var seg:Vector2 = p1 - p0
+		seg_len = seg.length()
 		
-	self.world_pos = level_view.get_cell_worldpos(init_x, init_y)
-	self.translate(world_pos)
+		# Substract already crossed length
+		var remaining_seg = seg_len - entity.seg_crossed_already
+		
+		if remaining_seg > remaining:
+			# We've found the proper segment
+			entity.seg_crossed_already += remaining
+			remaining = 0
+		else:
+			# We need to go further
+			remaining -= remaining_seg
+			entity.seg_crossed_already = 0
+			entity.idx = (entity.idx + 1) % track.size()
+
+	# We found the proper segment
+	# Deduce a position from how much it is crossed already
+	var pos = p0.linear_interpolate(p1, entity.seg_crossed_already / seg_len)
+	entity.world_pos = Vector3(pos.x, entity.world_pos.y, pos.y)
+
 
 # Build a list of points approximating this track
-func build_curve(start_x, start_y) -> Array:
+func _build_curve(start_x, start_y) -> Array:
 	var curve:Array = []
 
 	var kind:String = level_data.get_at(start_x, start_y).kind
@@ -98,54 +141,3 @@ func build_curve(start_x, start_y) -> Array:
 		if x == start_x && y == start_y:
 			break
 	return curve
-
-var t = 0.0
-var speed = 5
-
- # Current track segment; we are between idx and (idx+1)%count
-var idx = 0
-
-# Current length crossed on this segment so far
-var seg_crossed_already = 0
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-
-	# How much we want to cross at this step
-	t += delta
-	var to_cross = delta * speed
-
-	var remaining = to_cross
-	if remaining <= 0:
-		# Should not happen but hey
-		pass
-
-	var p0:Vector2
-	var p1:Vector2
-	var seg_len
-
-	while remaining > 0:
-		# Get the length of the current segment
-		p0 = track[idx]
-		p1 = track[(idx+1) % track.size()]
-		var seg:Vector2 = p1 - p0
-		seg_len = seg.length()
-		
-		# Substract already crossed length
-		var remaining_seg = seg_len - seg_crossed_already
-		
-		if remaining_seg > remaining:
-			# We've found the proper segment
-			seg_crossed_already += remaining
-			remaining = 0
-		else:
-			# We need to go further
-			remaining -= remaining_seg
-			seg_crossed_already = 0
-			idx = (idx+1) % track.size()
-
-	# We found the proper segment
-	# Deduce a position from how much it is crossed already
-	var pos = p0.linear_interpolate(p1, seg_crossed_already / seg_len)
-	var world_pos = Vector3(pos.x, self.translation.y, pos.y)
-	self.set_translation(world_pos)

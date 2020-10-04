@@ -25,3 +25,4 @@
 18h15 Première courbe de suivi de rails créée (coins RAF)
 19h00 Coins problématiques...
 20h15 Débloqué avec une interpolation linéaire (segments) incrémentale
+21h00 Multiple "trackers" (emplacement des bogies)

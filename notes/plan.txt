@@ -13,11 +13,11 @@ Dimanche :
  * [Fait] Construction modèle du niveau en mémoire (pour comportements/animation)
  * [Fait] Reventilation code Main dans scènes suivant responsabilités
  * [Fait] Générer une courbe suivant les rails (=> interpolation de segments)
- * Algo suivi rails !!
+ * [Fait] Algo suivi rails !!
  * Modéliser train et wagons
  * Props supplémentaires
  * Particules fumée
- * Animation bielles ?
- 
+
 Extra (ordre arbitraire) :
+ * Animation bielles ?
  * (LOL)
