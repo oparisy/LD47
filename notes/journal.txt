@@ -170,3 +170,5 @@ http://www.whizkidtech.redprince.net/bezier/circle/
 https://spencermortensen.com/articles/bezier-circle/
 
 Je n'aurai pas les coins "en aveugle" avec des Bézier : trop compliqué à mettre au point
+
+Sur conseil de Séb : une interpolation linéaire basique et incrémentale fait l'affaire !

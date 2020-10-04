@@ -24,3 +24,4 @@
 16h15 Réorganisation code pour faciliter conversion de position et accès aux données du niveau
 18h15 Première courbe de suivi de rails créée (coins RAF)
 19h00 Coins problématiques...
+20h15 Débloqué avec une interpolation linéaire (segments) incrémentale

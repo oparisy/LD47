@@ -5,7 +5,7 @@ onready var capsule = $MeshInstance
 var level_data
 var level_view
 
-var track:Curve2D
+var track:Array # An array of Vector2
 
 # Current cell we are on (level coordinates)
 var x
@@ -34,9 +34,9 @@ func setup(level_data, level_view, init_x, init_y):
 	self.world_pos = level_view.get_cell_worldpos(init_x, init_y)
 	self.translate(world_pos)
 
-# Build a curve approximating this track
-func build_curve(start_x, start_y) -> Curve2D:
-	var curve:Curve2D = Curve2D.new()
+# Build a list of points approximating this track
+func build_curve(start_x, start_y) -> Array:
+	var curve:Array = []
 
 	var kind:String = level_data.get_at(start_x, start_y).kind
 	if kind != 'rail_straight_topbottom':
@@ -57,15 +57,15 @@ func build_curve(start_x, start_y) -> Curve2D:
 		match kind:
 			'rail_straight_topbottom', 'rail_straight_leftright':
 				# A single point should be enough
-				curve.add_point(c_2d)
+				curve.append(c_2d)
 			'rail_90deg_topleft':
-				curve.add_point(c_2d)
+				curve.append(c_2d)
 			'rail_90deg_topright':
-				curve.add_point(c_2d)
+				curve.append(c_2d)
 			'rail_90deg_bottomleft':
-				curve.add_point(c_2d)
+				curve.append(c_2d)
 			'rail_90deg_bottomright':
-				curve.add_point(c_2d)
+				curve.append(c_2d)
 
 		# Change direction according to current cell, if needed
 		match kind:
@@ -99,43 +99,53 @@ func build_curve(start_x, start_y) -> Curve2D:
 			break
 	return curve
 
-# See https://spencermortensen.com/articles/bezier-circle/
-func add_quadrant_control_points(curve, center, radius):
-	# Those are for a top right corner
-	var c = 0.551915024494
-	var P0 = Vector2(0, 1) * radius
-	var P1 = Vector2(c, 1) * radius
-	var P2 = Vector2(1, c) * radius
-	var P3 = Vector2(1, 0) * radius
-	
-	# We want the curbe to be on the bottom left => translate
-	var shift = Vector2(-1, -1)
-	# TODO rotate
-	
-	# Translate
-	P0 += center
-	P1 += center
-	P2 += center
-	P3 += center
-	
-	curve.add_point(P0)
-	curve.add_point(P1)
-	curve.add_point(P2)
-	curve.add_point(P3)
-
 var t = 0.0
-var speed = 0.05
+var speed = 5
+
+ # Current track segment; we are between idx and (idx+1)%count
+var idx = 0
+
+# Current length crossed on this segment so far
+var seg_crossed_already = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	# We want constant speed along the curve, see:
-	# https://docs.godotengine.org/en/3.2/tutorials/math/beziers_and_curves.html#traversal
-	# TODO Do we need to call .tesselate() before baking?
-	t += delta * speed
-	
-	# Poor man's frac()
-	while t > 1:
-		t -= 1
-	var pos = track.interpolate_baked(t * track.get_baked_length(), true)
+
+	# How much we want to cross at this step
+	t += delta
+	var to_cross = delta * speed
+
+	var remaining = to_cross
+	if remaining <= 0:
+		# Should not happen but hey
+		pass
+
+	var p0:Vector2
+	var p1:Vector2
+	var seg_len
+
+	while remaining > 0:
+		# Get the length of the current segment
+		p0 = track[idx]
+		p1 = track[(idx+1) % track.size()]
+		var seg:Vector2 = p1 - p0
+		seg_len = seg.length()
+		
+		# Substract already crossed length
+		var remaining_seg = seg_len - seg_crossed_already
+		
+		if remaining_seg > remaining:
+			# We've found the proper segment
+			seg_crossed_already += remaining
+			remaining = 0
+		else:
+			# We need to go further
+			remaining -= remaining_seg
+			seg_crossed_already = 0
+			idx = (idx+1) % track.size()
+
+	# We found the proper segment
+	# Deduce a position from how much it is crossed already
+	var pos = p0.linear_interpolate(p1, seg_crossed_already / seg_len)
 	var world_pos = Vector3(pos.x, self.translation.y, pos.y)
 	self.set_translation(world_pos)
