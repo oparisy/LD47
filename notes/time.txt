@@ -12,3 +12,8 @@
 19h15 Retour courses ; étude instanciation assets
 21h15 J'ai mis au point un exemple d'instanciation d'asset pris dans un glb contenant toutes mes tuiles
 21h50 Fin pause repas
+23h40 Principe de l'éditeur de niveau trouvé ; fin de la soirée.
+
+04/12020 (Dimanche)
+09h00 Petit déjeuner au coworking ; présentation Led
+11h25 Chargmement niveau (instanciations depuis bitmaps)

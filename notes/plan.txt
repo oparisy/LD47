@@ -4,10 +4,11 @@ Samedi :
  * [Fait] Trouver une palette
  * [Fait] Modéliser des tuiles minimales
  * [Fait] Réglages caméra isométrique
- * [Fait] Etudier instanciation programmatique de sous-arbres (assets immportés)
- * Format de fichier simple (bitmap + metadata txt ?) pour description niveau
- * Faire un premier niveau dans Godot, placer caméra
+ * [Fait] Etudier instanciation programmatique de sous-arbres (assets importés)
 
 Dimanche :
-
+ * [Fait] Format de fichier simple (bitmap ?) et loader pour description niveau
+ * [Fait] Faire un premier niveau dans Godot
+ 
 Extra (ordre arbitraire) :
+ * (lol)

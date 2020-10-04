@@ -105,3 +105,56 @@ Ce qu'il me manquait lorsque j'ai transposé les angles à la main :
 Ensuite on peut "centrer" verticalement avec la position Y de la caméra, et "zoomer" avec la size
 
 J'ai pu retoucher mes scènes de test et obtenir des rendus proches de Blender
+
+J'ai commité un exemple de script recréant une "PackedScene" à partir d'un mesh faisant
+partie d'une scène glb importée plus vaste, ce qui permet ensuite de réinstancier ce mesh
+plusieurs fois programmatiquement
+
+Deux possibilités à ce stade :
+- écrire un script "postimport" ventilant un glb importé en ses sous-objets "racines",
+  puis les sauvant sous forme de tscn
+  => ensuite utilisables via mécanique de design de niveau habituelle (instanciation dans une scène parente)
+- implémenter l'approche "fichier de description de niveau"
+
+Pas tout à fait orthogonal, puisque la seconde approche peut bénéficier d'une ventilation vers tscn
+(permet de découpler l'origine des assets de leur utilisation)
+
+Cependant les règles d'extraction des sous-noeuds sont vraiment ad-hoc...
+
+Je vais faire une mécanique de chargement de bitmap où les metadata (mapping couleur -> mesh,
+identification de ce dernier) sont programmatiques (structure de donnée Godot) et interagissent
+avec du code de "chargement/réinstanciation" (donc maps couleur => factory,
+ce qui permet d'inclure des rotations ?)
+
+Après quelques tests, il n'est pas si simple de faire du layout de tuiles "à la main" avec du spanning
+dans l'éditeur 3D : soucis de coordonnée y, de parenting... cf https://godotforums.org/discussion/comment/42407
+Donc un éditeur "externe" a du sens
+
+J'ai pu faire un "niveau" sous forme d'un bitmap avec des couleurs simples dans "Pixelorama"
+https://orama-interactive.itch.io/pixelorama
+
+Sauve sous forme de PNG ; dans Godot, modification des options d'importation :
+"Import As" > "Image" (relance l'éditeur !)
+(Il y a aussi bitmap ?)
+On peut ensuite charger l'image dans un : https://docs.godotengine.org/fr/stable/classes/class_image.html
+=> accès aux pixels, dimension...
+            var image = Image();
+            image.load(path);
+
+			
+04/10/2020
+Réflexions nocturnes :
+- l'approche ci-dessus "in memory" ne permet pas d'appliquer l'étape "Create Trimesh Static Body"
+- on peut vouloir le faire à la main pour discerner le sol et obstacle des "décorations" (props)
+- pouvoir mettre des "collision shapes" dès Blender serait pratique pour ce cas
+
+On va se passer de physique pour aujourd'hui...
+
+Séb m'a présenté son outil Led : très intéressant pour du design rapide de niveau,
+y compris en vue de dessus / isométrique
+Beaucoup de règles et d'équilibrages peuvent s'y représenter
+Des règles procédurales pour placer des props pseudo-aléatoirement
+
+J'ai pu charger le bitmap, généraliser le chargement des assets et les placer via un switch
+Le placement de caméra interactivement dans godot pendant que le jeu tourne est pratique...
+
