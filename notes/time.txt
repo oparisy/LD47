@@ -19,4 +19,6 @@
 11h25 Chargmement niveau (instanciations depuis bitmaps)
 12h25 Placement caméra, éclairage, couleurs améliorés
 13h00 Travail précédent en partie perdu avant commit (main.tscn vide ?)... => OK, refait
-14h15 Niveau maintenant chargé dans une structure de données intermédiaire
+14h15 Niveau maintenant chargé dans une structure de données intermédiaire; pause repas
+14h45 Reprise
+16h15 Réorganisation code pour faciliter conversion de position et accès aux données du niveau

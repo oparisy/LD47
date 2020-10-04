@@ -11,6 +11,7 @@ Dimanche :
  * [Fait] Faire un premier niveau dans Godot
  * [Fait] Améliorer rendu : ajouter soleil, ombres, limiter impact couleur ciel
  * [Fait] Construction modèle du niveau en mémoire (pour comportements/animation)
+ * [Fait] Reventilation code Main dans scènes suivant responsabilités
  * Algo suivi rails !!
  * Modéliser train et wagons
  * Props supplémentaires

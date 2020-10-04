@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/tileset.glb" type="PackedScene" id=1]
 [ext_resource path="res://main.gd" type="Script" id=2]
-[ext_resource path="res://placeholder.scn" type="PackedScene" id=3]
+[ext_resource path="res://levelView.tscn" type="PackedScene" id=3]
 [ext_resource path="res://LevelLoader.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Spatial"]
@@ -11,16 +11,9 @@ script = ExtResource( 2 )
 [node name="tileset" parent="." instance=ExtResource( 1 )]
 visible = false
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.707107, -0.353553, 0.612373, 0, 0.866026, 0.499999, -0.707107, -0.353553, 0.612373, 27.0929, 28.4058, 37.73 )
-projection = 1
-current = true
-size = 28.0
-far = 500.0
+[node name="levelLoader" parent="." instance=ExtResource( 4 )]
 
-[node name="level" type="Spatial" parent="."]
-
-[node name="placeholder" parent="level" instance=ExtResource( 3 )]
+[node name="levelView" parent="." instance=ExtResource( 3 )]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.425782, -0.169366, -0.888834, -0.900882, -0.0122618, 0.43389, -0.0843849, 0.985477, -0.147358, -15.2825, 33.2063, 0 )
@@ -28,4 +21,9 @@ light_color = Color( 0.945098, 0.909804, 0.541176, 1 )
 light_energy = 0.8
 shadow_enabled = true
 
-[node name="levelLoader" parent="." instance=ExtResource( 4 )]
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.707107, -0.353553, 0.612373, 0, 0.866026, 0.499999, -0.707107, -0.353553, 0.612373, 27.0929, 28.4058, 37.73 )
+projection = 1
+current = true
+size = 28.0
+far = 500.0
