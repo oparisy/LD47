@@ -15,7 +15,7 @@ Dimanche :
  * [Fait] Générer une courbe suivant les rails (=> interpolation de segments)
  * [Fait] Algo suivi rails !!
  * [Fait] Modéliser bogies
- * Animer bogies (suivi courbe virages)
+ * [Fait] Animer bogies (suivi courbe virages)
  * Modéliser train et wagons
  * Props supplémentaires
  * Particules fumée

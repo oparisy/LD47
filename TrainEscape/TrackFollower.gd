@@ -101,18 +101,64 @@ func _build_curve(start_x, start_y) -> Array:
 		# Add control points for the current cell and direction
 		var center_world:Vector3 = level_view.get_cell_worldpos(x, y)
 		var c_2d:Vector2 = Vector2(center_world.x, center_world.z)
+		
+		var left:Vector2 = c_2d + Vector2(-1, 0)
+		var right:Vector2 = c_2d + Vector2(1, 0)
+		var top:Vector2 = c_2d + Vector2(0, -1)
+		var bottom:Vector2 = c_2d + Vector2(0, 1)
+		
+		var bottom_left = c_2d + Vector2(-1, 1)
+		var bottom_right = c_2d + Vector2(1, 1)
+		var top_right = c_2d + Vector2(1, -1)
+		var top_left = c_2d + Vector2(-1, -1)
+		
+		var diag = cos(PI/4) * szby2 # x/y rel coord of "circle middle"
+
 		match kind:
 			'rail_straight_topbottom', 'rail_straight_leftright':
 				# A single point should be enough
 				curve.append(c_2d)
 			'rail_90deg_topleft':
-				curve.append(c_2d)
+				# Approximate curves with two segments
+				var mid = bottom_right + Vector2(-diag, -diag)
+				if direction == 'up':
+					curve.append(bottom)
+					curve.append(mid)
+					curve.append(right)
+				else:
+					curve.append(right)
+					curve.append(mid)
+					curve.append(bottom)
 			'rail_90deg_topright':
-				curve.append(c_2d)
+				var mid = bottom_left + Vector2(diag, -diag)
+				if direction == 'up':
+					curve.append(bottom)
+					curve.append(mid)
+					curve.append(left)
+				else:
+					curve.append(left)
+					curve.append(mid)
+					curve.append(bottom)
 			'rail_90deg_bottomleft':
-				curve.append(c_2d)
+				var mid = top_right + Vector2(-diag, diag)
+				if direction == 'down':
+					curve.append(top)
+					curve.append(mid)
+					curve.append(right)
+				else:
+					curve.append(right)
+					curve.append(mid)
+					curve.append(top)
 			'rail_90deg_bottomright':
-				curve.append(c_2d)
+				var mid = top_left + Vector2(diag, diag)
+				if direction == 'down':
+					curve.append(top)
+					curve.append(mid)
+					curve.append(left)
+				else:
+					curve.append(left)
+					curve.append(mid)
+					curve.append(top)
 
 		# Change direction according to current cell, if needed
 		match kind:

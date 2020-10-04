@@ -27,4 +27,5 @@
 20h15 Débloqué avec une interpolation linéaire (segments) incrémentale
 21h00 Multiple "trackers" (emplacement des bogies)
 22h10 Bogies modélisés (du mal avec le positionnement dans Godot)
-22h30 Rotation bogies ; il faudrait un point de plus au moins dans les virages
+22h30 Rotation bogies
+23h00 Ajout point de trajectoire de plus dans les virages pour adoucir rotation
