@@ -1,5 +1,7 @@
 extends Spatial
 
+onready var level_data = $"levelLoader"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -8,59 +10,54 @@ func _ready():
 	var scene = preload("res://tileset.tscn").instance()
 	var tiles = loadTiles(scene)
 
-	# OK now; load the level bitmap
-	var image:Image = load('res://assets/level.png')
-	print(image.get_class())
-	image.lock() # Required for reading pixels
-	var width = image.get_width()
-	var height = image.get_height()
-	print('Size: (', width, ',', height, ')')
-
 	# Remove any level placeholder (used to place camera properly in editor)	
 	var level = get_node('level')
 	for child in level.get_children():
 		(child as Node).queue_free()
 
-	# Loop on image data to instanciate tiles
+	# Loop on level data to instanciate tiles
+	var width = level_data.get_width()
+	var height = level_data.get_height()
+	print('Level size: (', width, ',', height, ')')
 	for x in range(0, width - 1):
 		for y in range(0, height - 1):
-			var color:Color = image.get_pixel(x, y)
+			var cell = level_data.get_at(x, y)
 			var tr = Vector3(2*(x - width/2), 0, 2*(y - height/2))
-			addTileForColor(color, tiles, level, tr)
+			addTileForCell(cell, tiles, level, tr)
 
-func addTileForColor(color:Color, tiles, level:Node, tr:Vector3):
-	var rgba:int = color.to_rgba32()
+func addTileForCell(entry:Dictionary, tiles, level:Node, tr:Vector3):
+	var kind:String = entry.kind
 	var instance:Spatial
 	var roty = 0
-	match rgba:
-		0x00000000:
+	match kind:
+		'base':
 			instance = tiles['base'].instance()
-		0x000000ff:
+		'rock':
 			instance = tiles['rock'].instance()
-		0xfbf236ff:
+		'rail_90deg_topleft':
 			# To bottom and right ("top left corner")
 			instance = tiles['rail_90deg'].instance()
 			roty = PI
-		0xeec39aff:
+		'rail_90deg_topright':
 			# To bottom and left ("top right corner")
 			instance = tiles['rail_90deg'].instance()
 			roty = PI/2
-		0xac3232ff:
+		'rail_90deg_bottomleft':
 			# To top and right ("bottom left corner")
 			instance = tiles['rail_90deg'].instance()
 			roty = 3*PI/2
-		0xdf7126ff:
+		'rail_90deg_bottomright':
 			# To top and left ("bottom right corner")
 			instance = tiles['rail_90deg'].instance()
-		0x323c39ff:
+		'rail_straight_leftright':
 			# Left to right
 			instance = tiles['rail_straight'].instance()
 			roty = PI/2
-		0x37946eff:
+		'rail_straight_topbottom':
 			#Top to bottom
 			instance = tiles['rail_straight'].instance()
 		_:
-			print('Unhandled bitmap color: %08x' % rgba)
+			print('Unhandled cell kind: %s' % kind)
 			return
 
 	instance.translate(tr)
@@ -70,6 +67,7 @@ func addTileForColor(color:Color, tiles, level:Node, tr:Vector3):
 
 
 # Build a name => PackedScene dictionnary for each direct child of this scene
+# TODO It would be nie for a separate scene script to handle this
 func loadTiles(scene:Node):
 	var result = {}
 	for child in scene.get_children():

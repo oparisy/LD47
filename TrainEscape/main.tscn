@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/tileset.glb" type="PackedScene" id=1]
 [ext_resource path="res://main.gd" type="Script" id=2]
 [ext_resource path="res://placeholder.scn" type="PackedScene" id=3]
+[ext_resource path="res://LevelLoader.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 2 )
@@ -26,3 +27,5 @@ transform = Transform( -0.425782, -0.169366, -0.888834, -0.900882, -0.0122618, 0
 light_color = Color( 0.945098, 0.909804, 0.541176, 1 )
 light_energy = 0.8
 shadow_enabled = true
+
+[node name="levelLoader" parent="." instance=ExtResource( 4 )]
