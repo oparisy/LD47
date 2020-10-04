@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/rock.glb-9f91250a9be6fb7632e22e44d1dc6b5d.scn"
+path="res://.import/bogie.glb-b649ed50ad37fb1a50ce54189938fecb.scn"
 
 [deps]
 
-source_file="res://assets/tiles/rock.glb"
-dest_files=[ "res://.import/rock.glb-9f91250a9be6fb7632e22e44d1dc6b5d.scn" ]
+source_file="res://assets/bogie.glb"
+dest_files=[ "res://.import/bogie.glb-b649ed50ad37fb1a50ce54189938fecb.scn" ]
 
 [params]
 

@@ -33,6 +33,7 @@ func track_new() -> Dictionary:
 	
 	# Current length crossed on this segment so far
 	entity.seg_crossed_already = 0
+	entity.direction = Vector2(0, 1) # Downward
 
 	entity.world_pos = level_view.get_cell_worldpos(init_x, init_y)
 	return entity
@@ -49,13 +50,14 @@ func advance(entity, to_cross):
 
 	var p0:Vector2
 	var p1:Vector2
+	var seg:Vector2
 	var seg_len
 
 	while remaining > 0:
 		# Get the length of the current segment
 		p0 = track[entity.idx]
 		p1 = track[(entity.idx + 1) % track.size()]
-		var seg:Vector2 = p1 - p0
+		seg = p1 - p0
 		seg_len = seg.length()
 		
 		# Substract already crossed length
@@ -75,6 +77,8 @@ func advance(entity, to_cross):
 	# Deduce a position from how much it is crossed already
 	var pos = p0.linear_interpolate(p1, entity.seg_crossed_already / seg_len)
 	entity.world_pos = Vector3(pos.x, entity.world_pos.y, pos.y)
+	var dir2d = seg.normalized()
+	entity.direction = seg.normalized()
 
 
 # Build a list of points approximating this track

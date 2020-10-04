@@ -173,5 +173,5 @@ Je n'aurai pas les coins "en aveugle" avec des Bézier : trop compliqué à mettre 
 
 Sur conseil de Séb : une interpolation linéaire basique et incrémentale fait l'affaire !
 
-Je bloque régulièrement sur l'absence de struct/classes. En pratique pour encapsuler
-états et comportements des Dictionnary et des méthodes les acceptant fonctionnent bien
+Je bloque régulièrement sur l'absence de struct/classes. En pratique, pour encapsuler états
+et comportements des Dictionnary et des méthodes les acceptant fonctionnent bien

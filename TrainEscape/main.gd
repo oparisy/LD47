@@ -22,20 +22,24 @@ func _ready():
 	for i in range(bogies_count):
 		var bogie = {}
 		bogie.tracking_info = track_follower.track_new()
-		bogie.view = preload('res://TrackPlaceholder.tscn').instance()
-		bogie.view.set_translation(bogie.tracking_info.world_pos)
+		bogie.view = preload('res://bogie.tscn').instance()
+		# bogie.view = preload('res://TrackPlaceholder.tscn').instance()
 		track_follower.advance(bogie.tracking_info, i * gap)
+		update_bogie_view(bogie)
 		bogies.append(bogie)
 		add_child(bogie.view)
+
+func update_bogie_view(bogie):
+	var tp = bogie.tracking_info.world_pos
+	var pos_node:Spatial = bogie.view.get_child(0) # glb import adds an extra level (root Spatial)
+	var pos = Vector3(tp.x, pos_node.translation.y, tp.z) # Preserve elevation
+	var rot = (bogie.tracking_info.direction as Vector2).angle_to(Vector2(0, 1))
+
+	pos_node.set_translation(pos)
+	pos_node.set_rotation(Vector3(0, rot, 0))
 
 func _process(delta):
 	var to_cross = delta * speed
 	for bogie in bogies:
 		track_follower.advance(bogie.tracking_info, to_cross)
-		bogie.view.set_translation(bogie.tracking_info.world_pos)
-
-	#for i in range(0, level_data.get_width() - 1):
-	#	for j in range(0, level_data.get_height() - 1):
-	#		var track_follower = preload("res://TrackFollower.tscn").instance()
-	#		track_follower.setup(level_data, level_view, i, j)
-	#		add_child(track_follower)
+		update_bogie_view(bogie)
