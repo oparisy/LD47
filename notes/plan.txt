@@ -9,6 +9,12 @@ Samedi :
 Dimanche :
  * [Fait] Format de fichier simple (bitmap ?) et loader pour description niveau
  * [Fait] Faire un premier niveau dans Godot
+ * [Fait] Améliorer rendu : ajouter soleil, ombres, limiter impact couleur ciel
+ * Algo suivi rails !!
+ * Modéliser train et wagons
+ * Props supplémentaires
+ * Particules fumée
+ * Animation bielles ?
  
 Extra (ordre arbitraire) :
- * (lol)
+ * (LOL)
